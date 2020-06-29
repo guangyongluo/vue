@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>模板</title>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				new Vue({
+					el: '#itany',
+					data: {
+						msg: 'welcome to itany',
+					},
+					methods: {
+
+					},
+					created: function() {
+						alert(111);
+					}
+				});
+			}
+		</script>
+		<style>
+			/* 必须配置css样式，否则不生效 */
+			[v-cloak] {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="itany">
+			<input type="text" v-model="msg" />
+			
+			<h3 v-cloak>{{msg}}</h3>
+
+			<h3 v-text="msg"></h3>
+
+			<h3 v-html="msg"></h3>
+
+			<h3 v-cloak v-once>{{msg}}</h3>
+
+			<h3 v-pre>{{msg}}</h3>
+		</div>
+	</body>
+</html>

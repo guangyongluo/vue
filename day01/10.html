@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>属性的绑定和简写</title>
+		<script src="../js/vue.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				new Vue({
+					el: '#itany',
+					data: {
+						url:'https://www.baidu.com/img/PCtm_d9c8750bed0b3c7d089fa7d55720d6cf.png',
+						w: '200px',
+						h: '100px'
+					},
+					methods: {
+
+					}
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div id="itany">
+			<!-- 可以直接访问vue中的数据，不需要使用{{}} -->
+			<!-- <img v-bind:src="url"> -->
+			<!-- <img v-bind:src="url" /> -->
+			
+			<img :src='url' :width="w" :height="h"/>
+		</div>
+	</body>
+</html>

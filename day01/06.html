@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>联系：用户管理</title>
+		<link rel="stylesheet" href="../bootstrap/bootstrap.min.css"/>
+		<script src="../js/vue.js"></script>
+		<script src="../bootstrap/jquery-3.5.1.min.js"></script>
+		<script src="../bootstrap/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css" />
+		<script type="text/javascript">
+			window.onload=function(){
+				new Vue({
+					el: '.container',
+					data: {
+						users: [
+							{name:'tom', age:24, email:'tom@email.com'},
+							{name:'jack', age:23, email:'jack@email.com'},
+							{name:'tom', age:24, email:'tom@email.com'}
+						],
+						user: {},
+						nowIndex: -1, //当前要删除的索引
+						checkedIndexes: []
+					},
+					methods: {
+						addUser(){
+							this.users.push(this.user);
+							this.user = {};
+						},
+						deleteUser(){
+							if(this.nowIndex == -1){
+								if(this.checkedIndexes.length != 0){
+									this.checkedIndexes.map(value => {this.users.splice(value, 1)});
+									this.checkedIndexes = [];
+								}else{
+									this.users = [];
+								}
+							}else{
+								this.users.splice(this.nowIndex, 1); //从指定索引位置的位置开始删除第二个参数代表的个数
+							}
+						}
+					}
+				});
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<h2 class="text-center">添加用户</h2>
+			<form>
+				<div class="form-group row">
+					<label for="name" class="col-sm-2 col-form-label text-center">姓名</label>
+					<input type="text" class="form-control col-sm-8" id="name" v-model="user.name" placeholder="请输入姓名"></input>
+				</div>
+				<div class="form-group row">
+					<label for="age" class="col-sm-2 col-form-label text-center">年龄</label>
+					<input type="text" class="form-control col-sm-8" id="age" v-model="user.age" placeholder="请输入年龄"></input>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label text-center">邮件</label>
+					<input type="text" class="form-control col-sm-8" id="email" v-model="user.email" placeholder="请输入邮件"></input>
+				</div>
+				<div class="form-group text-center">
+					<input type="button" value="添加" class="btn btn-primary" v-on:click="addUser"/>
+					<input type="button" value="重置" class="btn btn-primary" />
+				</div>
+			</form>
+			
+			<hr />
+			
+			<table class="table table-bordered table-hover">
+				<caption class="h3 text-center text-info">用户列表</caption>
+				<thead>
+					<tr class="text-center">
+						<th>选定框</th>
+						<th>序号</th>
+						<th>姓名</th>
+						<th>年龄</th>
+						<th>邮箱</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(user, index) in users">
+						<td class="text-center">选择 <input type="checkbox" v-bind:value='user.name' class="align-middle" v-model="checkedIndexes"/></td>
+						<td>{{index+1}}</td>
+						<td>{{user.name}}</td>
+						<td>{{user.age}}</td>
+						<td>{{user.email}}</td>
+						<td>
+							<button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#del" v-on:click="nowIndex=index">删除</button>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6" class="text-right">
+							<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del" v-on:click="nowIndex=-1">删除所有</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+			<div class="modal" id="del">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" v-show="checkedIndexes.length != 0">确认要删除这些用户吗？</h4>
+							<h4 class="modal-title" v-show="checkedIndexes.length == 0 && nowIndex != -1">确认要删除用户{{users[nowIndex]?users[nowIndex].name:''}}吗？</h4>
+							<h4 class="modal-title" v-show="checkedIndexes.length == 0 && nowIndex == -1">确认要删除所有用户吗？</h4>
+							<button class="close" data-dismiss="modal">
+								<span>&times;</span>
+							</button>
+						</div>
+						<div class="modal-body text-center">
+							<button class="btn btn-sm btn-info" data-dismiss="modal">取消</button>
+							<button class="btn btn-sm btn-danger" data-dismiss="modal" v-on:click="deleteUser">确认</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
