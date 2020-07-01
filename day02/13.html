@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>多元素动画联系</title>
+		<link rel="stylesheet" href="../css/animate.min.css"></link>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<style>
+			p{
+				width: 100px;
+				height: 100px;
+				background-color: red;
+				margin: 20px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="itany">
+			<input type="text" v-model="name" />
+			<hr />
+
+			<transition-group enter-active-class="animate__animated animate__bounceInLeft" leave-active-class="animate__animated animate__bounceOutRight">
+				<p v-for="(v, k) in arr2" :key="v" v-show="flag">
+					{{v}}
+				</p>s
+			</transition-group>
+
+		</div>
+
+		<script type="text/javascript">
+			let vm = new Vue({
+				el: '#itany',
+				data: {
+					flag: true,
+					arr: ['tom', 'jack', 'mike', 'alice', 'alex', 'mark'],
+					name: ''
+				},
+				computed:{
+					arr2: function(){
+						let temp = [];
+						this.arr.forEach(value => {
+							if(value.includes(this.name)){
+								temp.push(value);
+							}
+						});
+						return temp;
+					}
+				}
+			});
+			
+			console.log('tom'.includes('o'));
+		</script>
+	</body>
+</html>

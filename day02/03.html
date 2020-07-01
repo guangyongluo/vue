@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>vue生命周期</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript">
+			window.onload = function() {
+				new Vue({
+					el: '#itany',
+					data: {
+						msg: 'welcome to itany'
+					},
+					methods: {
+						update(){
+							this.msg='欢迎来苏州';
+						},
+						destroy(){
+							this.$destroy();
+						}
+					},
+					beforeCreate(){
+						alert('刚初始化一个Vue的空实例对象，只有默认的一些生命周期函数和默认的事件，其它的东西都未创建。注意：在beforeCreate生命周期函数执行的时候，data和methods中的数据都还没有初始化。');
+					},
+					created(){
+						alert('data和methods都已经被初始化好了！如果要调用methods中的方法，或者操作data中的数据，最早只能在created中操作。');
+					},
+					beforeMount(){
+						alert('此函数执行的时候，模板已经在内存中编译好了，但是尚未挂载到页面中去，此时，页面还是旧的。');
+					},
+					mounted(){
+						alert('已经将内存中编译好的模板，真实的替换到浏览器的页面了，如果要通过某些插件操作页面上的DOM节点了，最早要在mounted中进行，只要执行完mounted，就表示真个Vue实例已经初始化完毕了，此时，组件已经脱离了创建阶段；进入运行阶段。');
+					},
+					beforeUpdate(){
+						alert('当执行beforeUpdate的时候，页面中的显示数据，还是旧的，此时data数据是最新的，页面尚未和最新的数据保持同步。');
+					},
+					updated(){
+						alert('先根据data中最新的数据，在内存中，重新渲染一份最新的内存DOM树，当最新的内存DOM树被更新之后，会把最新的内存DOM树，重新渲染到真实的页面中区，这时候，就完成了数据从data(Model层)->view(视图层)的更新，updated事件执行的时候，页面和data数据已经保持同步了，都是最新的。')
+					},
+					beforeDestroy(){
+						alert('当执行beforeDestory钩子函数的时候，Vue实例就已经从运行阶段，进入到了销毁阶段；当执行beforeDestory的时候，实例身上所有的data和所有的methods，以及过滤器、指令......都处于可用状态，此时还没真正执行销毁的过程。')
+					},
+					destroyed(){
+						alert('当执行到destoryed函数时，组件已经被完全销毁了，此时，组件中所有的数据、方法、指令、过滤器......都已经不可用了。')
+					}
+				});
+			}
+		</script>
+		<style>
+			.current {
+				background-color: #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="itany">
+			{{msg}}
+			<br />
+			
+			<button @click="update">更新数据</button>
+			<button @click="destroy">销毁组件</button>
+		</div>
+	</body>
+</html>

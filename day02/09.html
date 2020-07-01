@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>自定义指令练习</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<style>
+			#itany div{
+				width: 100px;
+				height: 100px;
+				position: absolute;
+			}
+			#itany .hello{
+				background-color: red;
+				top: 0;
+				left: 0;
+			}
+			#itany .world{
+				background-color: blue;
+				top: 0;
+				right: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="itany">
+			<div class="hello" v-drag></div>
+			<div class="world" v-drag></div>
+		</div>
+
+		<script type="text/javascript">
+			Vue.directive('drag', function(el) {
+				el.onmousedown = function(e) {
+					//获取鼠标点击处分别与div左边和上边的距离：鼠标位置-div位置
+					var disX = e.clientX - el.offsetLeft;
+					var disY = e.clientY - el.offsetTop;
+					console.log(disX, disY);
+
+					//包含在onmousedown里面，表示点击后才移动，为防止鼠标移出div，使用document.onmousemove
+					document.onmousemove = function(e) {
+						//获取移动后div的位置：鼠标位置-disX/disY
+						var l = e.clientX - disX;
+						var t = e.clientY - disY;
+						el.style.left = l + 'px';
+						el.style.top = t + 'px';
+					};
+
+					//停止移动
+					document.onmouseup = function(e) {
+						document.onmousemove = null;
+						document.onmouseup = null;
+					}
+
+				};
+
+
+			});
+
+
+			let vm = new Vue({
+				el: '#itany',
+				data: { //普通属性
+					msg: 'welcome to itany',
+					username: 'alice'
+				},
+				methods: {
+					change() {
+						this.msg = '欢迎来到苏州';
+					}
+				},
+				directives: { //自定义局部指令
+					focus: {
+						//当被绑定元素插入到DOM中时获取焦点
+						inserted(el) {
+							el.focus();
+						}
+					}
+
+					// focus: function(el){
+					// 	el.focus();
+					// }
+				}
+			});
+		</script>
+	</body>
+</html>
