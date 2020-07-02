@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>路由嵌套和参数的传递</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/vue-router.js"></script>
+		<link rel="stylesheet" href="../css/animate.min.css" />
+		<style>
+			.router-link-active {
+				font-size: 20px;
+				color: #ff7300;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="itany">
+			<div>
+				<!-- 使用router-link组件来定义导航，to属性指定链接url -->
+				<router-link to="/home">主页</router-link>
+				<router-link to="/user">用户</router-link>
+			</div>
+			<div>
+				<!-- router-view用来显示路由内容 -->
+				<transition enter-active-class="animate__animated animate__bounceInLeft" leave-active-class="animate__animated animate__bounceOutRight">
+					<router-view></router-view>
+				</transition>	
+			</div>
+
+			<hr>
+			<button @click="push">添加路由</button>
+			<button @click="replace">替换路由</button>
+		</div>
+
+		<template id="user">
+			<div>
+				<h3>用户信息</h3>
+				<ul>
+					<router-link to="/user/login?nameuser=tom&password=123" tag="li">用户登入</router-link>
+					<router-link to="/user/register/alice/456" tag="li">用户注册</router-link>
+				</ul>
+				<router-view></router-view>
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			//1.定义组件
+			var Home = {
+				template: '<h3>我是主页</h3>'
+			}
+			var User = {
+				template: '#user'
+			}
+			var Login = {
+				template: '<h4>用户登入... 获取参数:{{$route.query}}, {{$route.path}}</h4>'
+			}
+			var Register = {
+				template: '<h4>用户注册... 获取参数:{{$route.params}}, {{$route.path}}</h4>'
+			}
+
+			//2.配置路由
+			const routes = [{
+					path: '/home',
+					component: Home
+				},
+				{
+					path: '/user',
+					component: User,
+					children: [{
+							path: 'login',
+							component: Login
+						},
+						{
+							path: 'register/:username/:password',
+							component: Register
+						}
+					]
+				},
+				{
+					path: '*',
+					redirect: '/home'
+				} //重定向
+			]
+
+			//3.创建路由实例
+			const router = new VueRouter({
+				routes, //简写，相当于routes:routes
+				mode: 'history', //更改模式
+				// linkActiveClass: 'active' //更新活动链接的class类名
+			});
+
+			//4.创建根实例并将路由挂载到Vue实例上
+			let vm = new Vue({ //根组件
+				el: '#itany',
+				router, //注入路由
+				methods: {
+					push() {
+						router.push({
+							path: 'home'
+						});
+					},
+					replace() {
+						router.replace({
+							path: 'user'
+						}); //替换路由，没有历史记录
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

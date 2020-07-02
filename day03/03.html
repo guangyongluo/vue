@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>引用模板</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+	<body>
+		<div id="itany">
+			<my-hello></my-hello>
+		</div>
+		
+		<template id='wbs'>
+			<!-- <template>必须有且只有一个根元素 -->
+			<div>
+				<h3>{{msg}}</h3>
+				<ul>
+					<li v-for="(v, k) in arr">{{v}}</li>
+				</ul>	
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			new Vue({
+				el: '#itany',
+				components: {
+					'my-hello': {
+						template: '#wbs',
+						data(){
+							return {
+								msg: '欢迎来苏州',
+								arr: ['tom', 'jack', 'mike']
+							}
+						}
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

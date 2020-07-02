@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>组件的分类</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+	<body>
+		<div id="itany">
+			<my-hello></my-hello>
+			<my-world></my-world>
+		</div>
+
+		<script type="text/javascript">
+			/**
+			 * 全局组件，可以在所有vue实例中使用
+			 */
+			Vue.component('my-hello', {
+				template: '<h3>{{name}}</h3>',
+				data: function() { //在组件中存储数据时，必须以函数形式，函数返回一个对象
+					return {
+						name: 'alice'
+					}
+				}
+			});
+
+
+			new Vue({
+				el: '#itany',
+				data: {
+					name: 'tom'
+				},
+				components:{
+					'my-world':{
+						template: '<h3>欢迎{{who}}来苏州</h3>',
+						data(){
+							return {
+								who: 'jack'
+							}
+						}
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

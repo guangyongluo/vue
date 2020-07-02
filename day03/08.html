@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>slot内容分发</title>
+		<script type="text/javascript" src="../js/vue.js"></script>
+	</head>
+	<body>
+		<div id="itany">
+			<my-hello>
+				<ul slot="s1">
+					<li>aaa</li>
+					<li>bbb</li>
+					<li>ccc</li>
+				</ul>
+				<ol slot="s2">
+					<li>111</li>
+					<li>222</li>
+					<li>333</li>
+				</ol>
+			</my-hello>
+		</div>
+
+		<template id="hello">
+			<div>
+				<slot name='s2'></slot>
+				<h3>welcome to suzhou</h3>
+				<slot name='s1'></slot>
+				<!-- <slot>如果没有原内容就显示该内容</slot> -->
+			</div>
+		</template>
+
+		<script type="text/javascript">
+			let vm = new Vue({ //根组件
+				el: '#itany',
+
+				components: {
+					'my-hello': {
+						template: '#hello'
+					}
+				}
+			});
+		</script>
+	</body>
+</html>
